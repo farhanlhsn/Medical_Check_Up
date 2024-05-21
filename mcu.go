@@ -7,7 +7,7 @@ const NMAX int = 100
 type Patient struct {
 	nama string
 	asal string
-	umur int
+	usia int
 }
 
 type Package struct {
@@ -23,13 +23,24 @@ func main() {
 	var nPasien int
 
 	for {
-		fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
-		fmt.Printf("1. Penambahan Data\n2. Pengubahan Data\n3. Penghapusan Data\n4. Laporan Pemasukan\n5. Pencarian Pasien\n6. Tampilkan Data Pasien Terurut\n7. Keluar\n")
-		fmt.Printf("\nPilih Menu: ")
-		fmt.Scan(&pilihan)
+        fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
+        fmt.Println("Masukkan username: ")
+        var username string
+        fmt.Scan(&username)
+        fmt.Println("Masukkan password: ")
+        var password string
+        fmt.Scan(&password)
+        if username == "pegawai" && password == "123" {
+            fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
+		    fmt.Printf("1. Penambahan Data\n2. Pengubahan Data\n3. Penghapusan Data\n4. Laporan Pemasukan\n5. Pencarian Pasien\n6. Tampilkan Data Pasien Terurut\n7. Keluar\n")
+		    fmt.Printf("\nPilih Menu: ")
+		    fmt.Scan(&pilihan)
+        } else {
+            fmt.Println("Login gagal. Mohon masukkan username atau password dengan benar")
+        }
 
 		switch pilihan {
-		case 1:
+        case 1:
 			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
 			fmt.Println("Berapa pasien yang ingin ditambahkan? ")
 			var penambahan int
@@ -37,8 +48,9 @@ func main() {
 			fmt.Println("Ingin menambahkan pasien dari indeks ke berapa? ")
 			var idx int
 			fmt.Scan(&idx)
-			fmt.Printf("\nSilahkan masukkan data pasien sesuai urutan 'nama, umur, asal, jenis paket, harga paket, hasil MCU'\n")
+			fmt.Printf("\nSilahkan masukkan data pasien sesuai urutan 'nama, usia, asal, jenis paket, harga paket, hasil MCU'\n")
 			insert(&pasien, &paket, &nPasien, penambahan, idx)
+			
 
 		case 2:
 			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
@@ -46,6 +58,7 @@ func main() {
 			var nama string
 			fmt.Scan(&nama)
 			edit(&pasien, &paket, nPasien, nama)
+
 		case 3:
 			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
 			fmt.Println("Ingin menghapus data pasien atas nama siapa? ")
@@ -69,9 +82,11 @@ func main() {
 			switch pilihan {
 			case 3:
 				for i := 0; i < nPasien; i++ {
-					fmt.Println(pasien[i].nama, pasien[i].umur, pasien[i].asal, paket[i].nama, paket[i].harga, paket[i].hasil)
+					fmt.Println(pasien[i].nama, pasien[i].usia, pasien[i].asal, paket[i].nama, paket[i].harga, paket[i].hasil)
 				}
 			}
+		
+		
 		case 7:
 			break
 		default:
@@ -87,7 +102,7 @@ func insert(pasien *[NMAX]Patient, paket *[NMAX]Package, nPasien *int, penambaha
 	*nPasien += penambahan
 
 	for i := idx; i < *nPasien; i++ {
-		fmt.Scanln(&pasien[i].nama, &pasien[i].umur, &pasien[i].asal, &paket[i].nama, &paket[i].harga, &paket[i].hasil)
+		fmt.Scanln(&pasien[i].nama, &pasien[i].usia, &pasien[i].asal, &paket[i].nama, &paket[i].harga, &paket[i].hasil)
 	}
 }
 
@@ -105,7 +120,7 @@ func edit(pasien *[NMAX]Patient, paket *[NMAX]Package, n int, x string) {
 
 	if find {
 		fmt.Println("Masukkan ulang data yang benar:")
-		fmt.Scanln(&pasien[idx].nama, &pasien[idx].umur, &pasien[idx].asal, &paket[idx].nama, &paket[idx].harga, &paket[idx].hasil)
+		fmt.Scanln(&pasien[idx].nama, &pasien[idx].usia, &pasien[idx].asal, &paket[idx].nama, &paket[idx].harga, &paket[idx].hasil)
 	} else {
 		fmt.Println("Data tidak ditemukan")
 	}
@@ -133,4 +148,3 @@ func delete(pasien *[NMAX]Patient, paket *[NMAX]Package, nPasien *int, nama stri
 		fmt.Println("Data tidak ditemukan")
 	}
 }
-x
