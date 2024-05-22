@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"runtime"
 )
 
 const NMAX int = 1000
@@ -15,9 +16,15 @@ type Patient struct {
 }
 
 type Package struct {
-	nama  string
-	harga int
-	hasil string
+	nama    string
+	harga   int
+	hasil   string
+	tanggal tgl
+}
+
+type tgl struct {
+	bulan int
+	tahun int
 }
 
 var pasien [NMAX]Patient
@@ -26,7 +33,15 @@ var paket [NMAX]Package
 var nama string
 var pilihan int
 var nPasien int = 0
+
 func main() {
+	clearScreen()
+	fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
+	fmt.Printf("Silahkan login terlebih dahulu.\n")
+
+	if !login() {
+		os.Exit(0)
+	}
 
 	for {
 		fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
@@ -54,11 +69,10 @@ func main() {
 
 			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
 			fmt.Println("Ingin menghapus data pasien atas nama siapa? ")
-			fmt.Scan(&nama)
 			delete()
 			clearScreen()
 		case 4:
-	
+
 			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
 			fmt.Println("Ingin menampilkan laporan pemasukan MCU pada periode apa? ")
 			var periode int
@@ -93,6 +107,30 @@ func main() {
 	}
 }
 
+func login() bool {
+	var username, password string
+	var attempts int
+
+	for attempts < 3 {
+		fmt.Println("Masukkan username: ")
+		fmt.Scan(&username)
+		fmt.Println("Masukkan password: ")
+		fmt.Scan(&password)
+
+		if username == "pegawai" && password == "pegawai123" {
+			clearScreen()
+			fmt.Println("Login berhasil!")
+			return true
+		} else {
+			fmt.Println("Username atau password salah. Sisa percobaan:", 3-attempts-1)
+			attempts++
+		}
+	}
+	clearScreen()
+	fmt.Println("Anda telah salah memasukkan username dan password 3 kali. Silakan coba lagi nanti.")
+	return false
+}
+
 func insert(penambahan int) {
 	for i := nPasien; i < (nPasien + penambahan); i++ {
 		fmt.Scanln(&pasien[i].nama, &pasien[i].umur, &pasien[i].asal, &paket[i].nama, &paket[i].harga, &paket[i].hasil)
@@ -121,6 +159,8 @@ func edit(x string) {
 }
 
 func delete() {
+	var nama string
+	fmt.Scan(&nama)
 	var idx int = -1
 	var find bool = false
 	var i int = 0
@@ -144,7 +184,16 @@ func delete() {
 }
 
 func clearScreen() {
-	cmd := exec.Command("clear")
-	cmd.Stdout = os.Stdout
-	cmd.Run()
+	switch runtime.GOOS {
+	case "windows":
+		cmd := exec.Command("cmd", "/c", "cls")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	case "linux", "darwin":
+		cmd := exec.Command("clear")
+		cmd.Stdout = os.Stdout
+		cmd.Run()
+	default:
+		//Do nothing for unsupported OS
+	}
 }
