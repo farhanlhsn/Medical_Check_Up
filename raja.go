@@ -23,8 +23,8 @@ type Package struct {
 
 type rekaphasil struct {
 	tanggal tgl
-	namapaket string
-	namapasien string
+	namapaket Package.namapaket
+	namapasien Patient.namapasien
 }
 
 type tgl struct {
@@ -109,6 +109,7 @@ func main() {
 			fmt.Println("Terima kasih telah menggunakan aplikasi ini")
 			break
 		}
+		
 	}
 }
 
@@ -138,8 +139,8 @@ func login() bool {
 
 func insert(penambahan int) {
 	for i := nPasien; i < (nPasien + penambahan); i++ {
-		fmt.Println("Nama Pasien, Asal, Umur, \n")
-		fmt.Scanln(&)
+		fmt.Println("Nama Pasien, Asal, Umur, Nama Paket, Tahun Registrasi \n")
+		fmt.Scanln(&Patient.namapasien,&Patient.asal,&Patient.umur,&Package.namapaket,&Package.harga,&Package.tanggal)
 	}
 	nPasien += penambahan
 }
