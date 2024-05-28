@@ -8,35 +8,35 @@ import (
 	"strings"
 )
 
-const NMAX int = 1000
+const NMAX = 1000
 
 type Patient struct {
 	namapasien string
-	asal string
-	umur int
+	asal       string
+	umur       int
 }
 
 type Package struct {
 	namapaket string
-	harga   int
-	tanggal int
+	tanggal   int
 }
 
 type rekaphasil struct {
-	tanggal int
-	namapaket string
+	tanggal    int
+	namapaket  string
 	namapasien string
 }
 
-var pasien[NMAX]Patient
-var rekap[NMAX]rekaphasil
-var paket[NMAX]Package
+var pasien [NMAX]Patient
+var rekap [NMAX]rekaphasil
+var paket [NMAX]Package
 
-var nama string
-var pilihan int
-var nPasien int = 0
+var nPasien int
 
 func main() {
+	var penambahan int
+	var pilihan int
+
 	clearScreen()
 	fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
 	fmt.Printf("Silahkan login terlebih dahulu.\n")
@@ -56,23 +56,21 @@ func main() {
 			clearScreen()
 			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
 			fmt.Println("Berapa pasien yang ingin ditambahkan? ")
-			var penambahan int
 			fmt.Scan(&penambahan)
 			fmt.Printf("\nSilahkan masukkan data pasien sesuai urutan yang diminta\n")
 			insert(penambahan)
 		case 2:
-
+			clearScreen()
 			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
 			fmt.Println("Ingin merubah data pasien atas nama siapa? ")
+			var nama string
 			fmt.Scan(&nama)
 			edit(nama)
-			clearScreen()
 		case 3:
-
+			clearScreen()
 			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
 			fmt.Println("Ingin menghapus data pasien atas nama siapa? ")
 			delete()
-			clearScreen()
 		case 4:
 			clearScreen()
 			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
@@ -84,63 +82,63 @@ func main() {
 			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
 			fmt.Printf("Ingin mencari daftar pasien berdasarkan apa?\n1. Berdasarkan paket MCU\n2. Berdasarkan Periode\n3. Berdasarkan nama pasien\n")
 			fmt.Scan(&pilihan)
- 			switch pilihan {
-/* 				case 1:
-                    clearScreen()
-					fmt.Println("Masukkan Nama Paket")
-					var nama string
-					fmt.Scan(&nama)
-					searchPaket(&nama)
-                case 2:
-					fmt.Println("Masukkan Periode")
-					var periode int
-					fmt.Scanln(&periode)
-					searchPeriode(&periode)
-                    clearScreen() */
-               /*  case 3:
-					fmt.Println("Masukkan Nama Pasien")
-					var nama string
-					fmt.Scan(&nama)
-					searchNama(&nama)
-                    clearScreen() */
-            } 
+			switch pilihan {
+			/* 				case 1:
+			                    clearScreen()
+								fmt.Println("Masukkan Nama Paket")
+								var nama string
+								fmt.Scan(&nama)
+								searchPaket(&nama)
+			                case 2:
+								fmt.Println("Masukkan Periode")
+								var periode int
+								fmt.Scanln(&periode)
+								searchPeriode(&periode)
+			                    clearScreen() */
+			/*  case 3:
+								fmt.Println("Masukkan Nama Pasien")
+								var nama string
+								fmt.Scan(&nama)
+								searchNama(&nama)
+			                    clearScreen() */
+			}
 		case 6:
 			clearScreen()
 			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
-			fmt.Printf("Ingin menampilakan data pasien terurut berdasarkan apa?\n1. Periode MCU\n2. Paket MCU\n3. Nama (Terurut dari A-Z)\n")
+			fmt.Printf("Ingin menampilakan data pasien terurut berdasarkan apa?\n1. Periode MCU\n2. Paket MCU\n3. Nama\n")
 			fmt.Scan(&pilihan)
 			switch pilihan {
 			case 1:
 				clearScreen()
 				fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
-				//sortPeriode()
+				sortPeriode()
 			case 2:
 				clearScreen()
-                fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
-                fmt.Println("Masukkan Nama Paket")
-				var namapaket string
-				fmt.Scanln(&namapaket)
-                //sortPaket(namapaket)
+				fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
+				sortPaket()
 			case 3:
 				clearScreen()
-                fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
-                sortNama()
+				fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
+				sortNama()
 			}
 		case 7:
-			break
+
 		default:
 			clearScreen()
 			fmt.Printf("Menu tidak tersedia\n")
 		}
 		if pilihan == 7 {
-            clearScreen()
-            fmt.Println("Terima kasih telah menggunakan aplikasi ini")
-            break
-        }
+			clearScreen()
+			fmt.Println("Terima kasih telah menggunakan aplikasi ini")
+			break
+		}
 	}
 }
 
 func login() bool {
+	/* fitur login yang akan meminta user untuk memasukkan kredensial username dan password.
+	Apabila kredensial yang dimasukkan benar, maka user akan berhasil login. Jika salah,
+	user akan diberikan kesempatan 3 kali untuk mencoba. */
 	var username, password string
 	var attempts int
 
@@ -165,9 +163,10 @@ func login() bool {
 }
 
 func insert(penambahan int) {
+	// procedure yang digunakan untuk memasukkan data pasien sesuai dengan jumlah yang diinginkan
 	fmt.Println("Nama Pasien, Asal, Umur, Nama Paket, Tahun Registrasi")
 	for i := nPasien; i < (nPasien + penambahan); i++ {
-		fmt.Scanln(&pasien[i].namapasien, &pasien[i].asal,&pasien[i].umur,&paket[i].namapaket,&paket[i].tanggal)
+		fmt.Scanln(&pasien[i].namapasien, &pasien[i].asal, &pasien[i].umur, &paket[i].namapaket, &paket[i].tanggal)
 		rekap[i].tanggal = paket[i].tanggal
 		rekap[i].namapaket = paket[i].namapaket
 		rekap[i].namapasien = pasien[i].namapasien
@@ -177,54 +176,57 @@ func insert(penambahan int) {
 }
 
 func edit(x string) {
+	var pilihan int
 	var find bool = false
 	var i int = 0
 	for i < nPasien && !find {
 		if pasien[i].namapasien == x {
 			find = true
-			i=i-1
+		} else {
+			i++
 		}
-		i++
 	}
 
 	if find {
-		fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
+		fmt.Printf("===============================\n Aplikasi Medical Check-Up \n===============================\n")
 		fmt.Println("Ingin merubah data apa?")
 		fmt.Printf("1. Nama Pasien\n2. Asal Pasien\n3. Umur Pasien\n4. Nama Paket\n5. Tahun Registrasi\n")
 		fmt.Scan(&pilihan)
 		switch pilihan {
 		case 1:
-			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
-            fmt.Println("Masukkan nama pasien baru: ")
-            fmt.Scan(&pasien[i].namapasien)
+			fmt.Printf("===============================\n Aplikasi Medical Check-Up \n===============================\n")
+			fmt.Println("Masukkan nama pasien baru: ")
+			fmt.Scan(&pasien[i].namapasien)
 			rekap[i].namapasien = pasien[i].namapasien
-        case 2:
-			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
+		case 2:
+			fmt.Printf("===============================\n Aplikasi Medical Check-Up \n===============================\n")
 			fmt.Println("Masukkan asal pasien baru: ")
 			fmt.Scan(&pasien[i].asal)
 		case 3:
-			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
-            fmt.Println("Masukkan umur pasien baru: ")
-            fmt.Scan(&pasien[i].umur)
-        case 4:
-			fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
+			fmt.Printf("===============================\n Aplikasi Medical Check-Up \n===============================\n")
+			fmt.Println("Masukkan umur pasien baru: ")
+			fmt.Scan(&pasien[i].umur)
+		case 4:
+			fmt.Printf("===============================\n Aplikasi Medical Check-Up \n===============================\n")
 			fmt.Println("Masukkan nama paket baru: ")
 			fmt.Scan(&paket[i].namapaket)
 			rekap[i].namapaket = paket[i].namapaket
-		case 5: 
-		    fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
+		case 5:
+			fmt.Printf("===============================\n Aplikasi Medical Check-Up \n===============================\n")
 			fmt.Println("Masukkan tahun registrasi baru: ")
 			fmt.Scan(&paket[i].tanggal)
 			rekap[i].tanggal = paket[i].tanggal
 		default:
 			fmt.Println("Menu tidak tersedia")
-        }
+		}
 	} else {
 		fmt.Println("Data tidak ditemukan")
 	}
 }
 
 func delete() {
+	/* procedure yang digunakan untuk menghapus data pasien berdasarkan nama pasien yang diinginkan. Untuk mencari nama pasien,
+	   digunakan sequential search */
 	var nama string
 	fmt.Scan(&nama)
 	var idx int = -1
@@ -237,7 +239,7 @@ func delete() {
 		}
 		i++
 	}
-
+	clearScreen()
 	if find {
 		for i := idx; i < nPasien-1; i++ {
 			pasien[i] = pasien[i+1]
@@ -245,6 +247,7 @@ func delete() {
 			rekap[i] = rekap[i+1]
 		}
 		nPasien--
+		fmt.Println("Data berhasil dihapus")
 	} else {
 		fmt.Println("Data tidak ditemukan")
 	}
@@ -267,46 +270,66 @@ func clearScreen() {
 
 func laporanPemasukan(periode int) {
 	var total int
+	fmt.Printf("Data pasien yang melakukan MCU pada periode %d:\n", periode)
+	fmt.Println(strings.Repeat("-", 70))
+	fmt.Printf("%-20s %-10s %-5s %-15s %-20s\n", "Nama Pasien", "Asal", "Umur", "Nama Paket", "Tahun Registrasi")
 	for i := 0; i < nPasien; i++ {
 		if rekap[i].tanggal == periode {
-            total += paket[i].harga
-        }
-    }
-	clearScreen()
+			fmt.Printf("%-20s %-10s %-5d %-15s %-20d\n", rekap[i].namapasien, pasien[i].asal, pasien[i].umur, rekap[i].namapaket, rekap[i].tanggal)
+			switch rekap[i].namapaket {
+			case "A":
+				total += 50000
+			case "B":
+				total += 75000
+			case "C":
+				total += 100000
+			}
+		}
+	}
+	fmt.Println(strings.Repeat("-", 70))
 	fmt.Println("Total pemasukan pada tahun", periode, "adalah", total)
 }
 
 func cetak() {
 	clearScreen()
-    fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
-    fmt.Println("Nama Pasien, Asal, Umur, Nama Paket, Tahun Registrasi")
-    for i := 0; i < nPasien; i++ {
-        fmt.Println(pasien[i].namapasien, pasien[i].asal, pasien[i].umur, paket[i].namapaket, paket[i].tanggal)
-    }
+	fmt.Printf("===============================\n   Aplikasi Medical Check-Up   \n===============================\n")
+	fmt.Printf("%-20s %-10s %-5s %-15s %-20s\n", "Nama Pasien", "Asal", "Umur", "Nama Paket", "Tahun Registrasi")
+	for i := 0; i < nPasien; i++ {
+		fmt.Printf("%-20s %-10s %-5d %-15s %-20d\n", pasien[i].namapasien, pasien[i].asal, pasien[i].umur, paket[i].namapaket, paket[i].tanggal)
+	}
 }
 
-/* func sortPaket(paket string) {
+func sortPaket() {
+	//mengurutkan data pasien menurut Paket MCU yang dipilih dengan konsep Insertion Sort
 	var j int
 	var tempPaket Package
 	var tempPasien Patient
 	var tempRekap rekaphasil
 	var pass int = 1
-	for pass <= nPasien {
-		j = pass - 1
-		for j >= 0 && paket[j].namapaket >= tempPaket[pass].namapasien {
-			paket[j+1] = paket[j]
-			pasien[j+1] = pasien[j]
-			rekap[j+1] = rekap[j]
+	for pass <= nPasien-1 {
+		j = pass
+		for j > 0 && (paket[j].namapaket < paket[j-1].namapaket || (paket[j].namapaket == paket[j-1].namapaket && strings.ToLower(pasien[j].namapasien) < strings.ToLower(pasien[j-1].namapasien))) {
+			tempPaket = paket[j]
+			tempPasien = pasien[j]
+			tempRekap = rekap[j]
+
+			paket[j] = paket[j-1]
+			pasien[j] = pasien[j-1]
+			rekap[j] = rekap[j-1]
+
+			paket[j-1] = tempPaket
+			pasien[j-1] = tempPasien
+			rekap[j-1] = tempRekap
+
 			j--
 		}
-		paket[j+1] = tempPaket[pass]
-		pasien[j+1] = tempPasien[pass]
-		rekap[j+1] = tempRekap[pass]
 		pass++
 	}
-} */
+	cetak()
+}
 
 func sortNama() {
+	//mengurutkan data pasien menurut nama pasien dengan konsep Selection Sort
 	var i, j, minIdx int
 	var tempPasien Patient
 	var tempPaket Package
@@ -329,9 +352,35 @@ func sortNama() {
 		tempRekap = rekap[minIdx]
 		rekap[minIdx] = rekap[i]
 		rekap[i] = tempRekap
-
-		cetak()
 	}
+	cetak()
 }
 
+func sortPeriode() {
+	//mengurutkan data pasien menurut periode MCU dengan konsep Selection Sort
+	var i, j, minIdx int
+	var tempPasien Patient
+	var tempPaket Package
+	var tempRekap rekaphasil
+	for i = 0; i < nPasien-1; i++ {
+		minIdx = i
+		for j = i + 1; j < nPasien; j++ {
+			if paket[j].tanggal < paket[minIdx].tanggal || (paket[j].tanggal == paket[minIdx].tanggal && strings.ToLower(pasien[j].namapasien) < strings.ToLower(pasien[minIdx].namapasien)) {
+				minIdx = j
+			}
+		}
+		tempPasien = pasien[minIdx]
+		pasien[minIdx] = pasien[i]
+		pasien[i] = tempPasien
 
+		tempPaket = paket[minIdx]
+		paket[minIdx] = paket[i]
+		paket[i] = tempPaket
+
+		tempRekap = rekap[minIdx]
+		rekap[minIdx] = rekap[i]
+		rekap[i] = tempRekap
+	}
+
+	cetak()
+}
