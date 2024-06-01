@@ -1,4 +1,4 @@
-package main
+/* package main
 
 import (
 	"fmt"
@@ -204,3 +204,4 @@ func clearScreen() {
 		//Do nothing for unsupported OS
 	}
 }
+ */

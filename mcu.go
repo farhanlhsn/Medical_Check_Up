@@ -1,4 +1,4 @@
-package main
+/* package main
 
 import "fmt"
 
@@ -147,4 +147,4 @@ func delete(pasien *[NMAX]Patient, paket *[NMAX]Package, nPasien *int, nama stri
 	} else {
 		fmt.Println("Data tidak ditemukan")
 	}
-}
+} */
